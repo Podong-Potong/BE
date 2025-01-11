@@ -1,6 +1,7 @@
 package org.coffeepower.podongpotong.domain.spending.service;
 
 import lombok.RequiredArgsConstructor;
+import org.coffeepower.podongpotong.domain.spending.dto.MonthSpendReq;
 import org.coffeepower.podongpotong.domain.spending.dto.SpendResDto;
 import org.coffeepower.podongpotong.domain.spending.dto.SpendRegisterReqDto;
 import org.coffeepower.podongpotong.domain.spending.entity.Spending;
@@ -37,7 +38,7 @@ public class SpendingService {
     }
 
     // 지출 출력
-    public Result<?> getSpending(long userId) {
+    public Result<?> getSpending(long userId, MonthSpendReq monthSpendReq) {
         User user = null;
 
         try {
@@ -46,7 +47,7 @@ public class SpendingService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        List<Spending> spendingList = spendingRepository.findByUser(user);
+        List<Spending> spendingList = spendingRepository.findByUserBetweenYearAndMonth(user, monthSpendReq.getYear(), monthSpendReq.getMonth());
         List<SpendResDto> spendResDtos = new ArrayList<>();
 
         for (Spending spending : spendingList) {

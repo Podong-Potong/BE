@@ -2,13 +2,11 @@ package org.coffeepower.podongpotong.domain.spending.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.coffeepower.podongpotong.domain.spending.dto.MonthSpendReq;
 import org.coffeepower.podongpotong.domain.spending.dto.SpendRegisterReqDto;
 import org.coffeepower.podongpotong.domain.spending.service.SpendingService;
 import org.coffeepower.podongpotong.global.exception.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +17,8 @@ public class SpendingController {
     private final SpendingService spendingService;
 
     @PostMapping("/")
-    public Result<?> saveSpending(SpendRegisterReqDto spendRegisterReqDto) { return spendingService.saveSpending( 1L, spendRegisterReqDto); }
+    public Result<?> saveSpending(@RequestBody SpendRegisterReqDto spendRegisterReqDto) { return spendingService.saveSpending( 1L, spendRegisterReqDto); }
 
-    @GetMapping("/")
-    public Result<?> getSpending() { return spendingService.getSpending(1L); }
+    @PostMapping("/getlist")
+    public Result<?> getSpending(@RequestBody MonthSpendReq monthSpendReq) { return spendingService.getSpending(1L, monthSpendReq); }
 }
