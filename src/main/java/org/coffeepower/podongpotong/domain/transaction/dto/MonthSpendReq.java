@@ -1,4 +1,4 @@
-package org.coffeepower.podongpotong.domain.spending.dto;
+package org.coffeepower.podongpotong.domain.transaction.dto;
 
 import lombok.Data;
 

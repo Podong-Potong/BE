@@ -1,11 +1,11 @@
-package org.coffeepower.podongpotong.domain.spending.entity;
+package org.coffeepower.podongpotong.domain.transaction.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SpendCategory {
+public enum TransactionCategory {
     FOOD("식비"),
     CAFE("카페/간식"),
     ALCOHOL("술/유흥"),
@@ -25,6 +25,9 @@ public enum SpendCategory {
     GIFTS("경조/선물"),
     SAVINGS("모임통장 및 청약"),
     FRIEND("친구"),
+
+    INCOME("수입"),
+
     ETC("기타");
 
     private final String description;

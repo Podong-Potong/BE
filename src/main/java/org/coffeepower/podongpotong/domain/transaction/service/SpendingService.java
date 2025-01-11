@@ -1,11 +1,11 @@
-package org.coffeepower.podongpotong.domain.spending.service;
+package org.coffeepower.podongpotong.domain.transaction.service;
 
 import lombok.RequiredArgsConstructor;
-import org.coffeepower.podongpotong.domain.spending.dto.MonthSpendReq;
-import org.coffeepower.podongpotong.domain.spending.dto.SpendResDto;
-import org.coffeepower.podongpotong.domain.spending.dto.SpendRegisterReqDto;
-import org.coffeepower.podongpotong.domain.spending.entity.Spending;
-import org.coffeepower.podongpotong.domain.spending.repository.SpendingRepository;
+import org.coffeepower.podongpotong.domain.transaction.dto.MonthSpendReq;
+import org.coffeepower.podongpotong.domain.transaction.dto.SpendResDto;
+import org.coffeepower.podongpotong.domain.transaction.dto.SpendRegisterReqDto;
+import org.coffeepower.podongpotong.domain.transaction.entity.TransactionDetail;
+import org.coffeepower.podongpotong.domain.transaction.repository.SpendingRepository;
 import org.coffeepower.podongpotong.domain.user.entity.User;
 import org.coffeepower.podongpotong.domain.user.exception.NoUserDataException;
 import org.coffeepower.podongpotong.domain.user.repository.UserRepository;
@@ -31,7 +31,7 @@ public class SpendingService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        spendingRepository.save(new Spending(spendRegisterReqDto, user));
+        spendingRepository.save(new TransactionDetail(spendRegisterReqDto, user));
 
         return new Result<>(ErrorCode.SUCCESS);
     }
@@ -46,11 +46,11 @@ public class SpendingService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        List<Spending> spendingList = spendingRepository.findByUserBetweenYearAndMonth(user, monthSpendReq.getYear(), monthSpendReq.getMonth());
+        List<TransactionDetail> transactionDetailList = spendingRepository.findByUserBetweenYearAndMonth(user, monthSpendReq.getYear(), monthSpendReq.getMonth());
         List<SpendResDto> spendResDtos = new ArrayList<>();
 
-        for (Spending spending : spendingList) {
-            spendResDtos.add(new SpendResDto(spending));
+        for (TransactionDetail transactionDetail : transactionDetailList) {
+            spendResDtos.add(new SpendResDto(transactionDetail));
         }
 
         return new Result<>(ErrorCode.SUCCESS, spendResDtos);

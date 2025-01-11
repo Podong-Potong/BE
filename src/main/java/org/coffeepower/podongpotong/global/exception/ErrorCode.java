@@ -16,7 +16,10 @@ public enum ErrorCode {
 
     // User
     FAIL_TO_FIND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다"),
-    DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다");
+    DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다"),
+
+    // DB
+    DB_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "DB 연결 에러");
 
     private final HttpStatus status;
     private final String message;

@@ -1,11 +1,11 @@
-package org.coffeepower.podongpotong.domain.spending.controller;
+package org.coffeepower.podongpotong.domain.transaction.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.coffeepower.podongpotong.domain.spending.dto.MonthSpendReq;
-import org.coffeepower.podongpotong.domain.spending.dto.SpendRegisterReqDto;
-import org.coffeepower.podongpotong.domain.spending.service.SpendingService;
+import org.coffeepower.podongpotong.domain.transaction.dto.MonthSpendReq;
+import org.coffeepower.podongpotong.domain.transaction.dto.SpendRegisterReqDto;
+import org.coffeepower.podongpotong.domain.transaction.service.SpendingService;
 import org.coffeepower.podongpotong.global.exception.Result;
 import org.springframework.web.bind.annotation.*;
 
