@@ -1,5 +1,6 @@
 package org.coffeepower.podongpotong.global.exception;
 
+import lombok.Builder;
 import lombok.Getter;
 import java.time.Instant;
 
@@ -11,27 +12,22 @@ public class ResponseResult<T> {
     private T data;
 
     // 응답은 하지만, 응답할 데이터가 없는 경우
-    public String ResponseResult(ErrorCode errorCode) {
+    public ResponseResult(ErrorCode errorCode) {
         this.statusCode = errorCode.getStatus().value();
         this.message = errorCode.getMessage();
         this.timestamp = Instant.now().toString();
         this.data = null;
-
-        return this.toString();
     }
 
     // 응답 코드 및 응답 데이터를 담아 보냄
-    public String ResponseResult(ErrorCode errorCode, T resultObject) {
+    public ResponseResult(ErrorCode errorCode, T resultObject) {
         this.statusCode = errorCode.getStatus().value();
         this.message = errorCode.getMessage();
         this.timestamp = Instant.now().toString();
         this.data = resultObject;
-
-        return this.toString();
     }
 
-    @Override
-    public String toString() {
+    public String toReturn(){
         return "Result{" +
                 "code=" + statusCode +
                 ", msg='" + message + '\'' +

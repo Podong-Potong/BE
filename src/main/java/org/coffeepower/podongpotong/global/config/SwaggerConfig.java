@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+    // Swagger 페이지
+    // http://localhost:8080/swagger-ui/index.html#
+
     private Info info(){
         return new Info()
                 .title("Podong Potong")
