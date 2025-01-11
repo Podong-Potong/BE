@@ -20,7 +20,7 @@ public class UserController {
     @Operation(summary = "이메일 중복 확인", description = "회원가입 시, 이메일 중복 확인 API")
     public Result<?> DuplicateEmailCheck(@RequestParam("email") String email) { return userService.duplicateEmailCheck(email); }
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(summary = "회원가입", description = "회원가입 API")
     public Result<?> registerUser(@RequestBody RegisterReqDto registerReqDto) { return userService.registerUser(registerReqDto); }
 }
