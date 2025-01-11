@@ -2,6 +2,7 @@ package org.coffeepower.podongpotong.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.coffeepower.podongpotong.domain.user.dto.RegisterReqDto;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
@@ -17,12 +18,20 @@ public class User {
     private String email;
     private String password;
     private String name;
-    private LocalDate birth;
+    private LocalDate registerDate;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("USER")
     private RoleType roleType;
+
+    public User(RegisterReqDto registerReqDto) {
+        this.email = registerReqDto.getEmail();
+        this.password = registerReqDto.getPassword();
+        this.name = registerReqDto.getName();
+        this.gender = registerReqDto.getGender();
+        this.roleType = RoleType.USER;
+        this.registerDate = LocalDate.now();
+    }
 }
