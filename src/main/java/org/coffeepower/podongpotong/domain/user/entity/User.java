@@ -2,13 +2,14 @@ package org.coffeepower.podongpotong.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
 @Getter
 @Entity
 @Table(name = "users")
-public class user {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,5 +23,6 @@ public class user {
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("USER")
     private RoleType roleType;
 }
