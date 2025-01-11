@@ -2,6 +2,7 @@ package org.coffeepower.podongpotong.domain.spending.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.coffeepower.podongpotong.domain.spending.dto.SpendRegisterReqDto;
 import org.coffeepower.podongpotong.domain.user.entity.User;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "spendings")
+@NoArgsConstructor
 public class Spending {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

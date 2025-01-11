@@ -46,6 +46,10 @@ dependencies {
     // Lettuce는 따로 의존성 추가 안해줘도 된다.
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // Json 직렬화
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2' // Java 8 Date/Time
+
 }
 
 tasks.named('test') {
