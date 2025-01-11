@@ -15,17 +15,24 @@ import java.time.LocalDate;
 @Getter
 public class ChallengeResDto {
 
-    private ChallengeType challengeType;
-    private String selectedDays;
-    private LocalDate startDate;
-    private Integer yearGoal;        // 연간 목표
-    private Integer weekOfMonthGoal; // 요일별 목표
+    private final ChallengeType challengeType;
+    private final String selectedDaysNoSpending;
+    private final String selectedDaysWeeklySaving;
+    private final LocalDate startDate;
+    private final Integer yearGoal;        // 연간 목표
+    private final Integer weekOfMonthGoal; // 요일별 목표
+    private final Integer startAmount;     // 시작 금액
+    private final Integer plusAmount;       // 증가 금액
+
 
     public ChallengeResDto(Challenge challenge) {
         this.challengeType = challenge.getChallengeType();
-        this.selectedDays = challenge.getSelectedDays();
+        this.selectedDaysNoSpending = challenge.getSelectedDaysNoSpending();
+        this.selectedDaysWeeklySaving = challenge.getSelectedDaysWeeklySaving();
         this.startDate = challenge.getStartDate();
         this.yearGoal = challenge.getYearGoal();
         this.weekOfMonthGoal = challenge.getWeekOfMonthGoal();
+        this.startAmount = challenge.getStartAmount();
+        this.plusAmount = challenge.getPlusAmount();
     }
 }

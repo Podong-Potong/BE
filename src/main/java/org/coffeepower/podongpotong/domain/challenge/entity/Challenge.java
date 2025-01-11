@@ -25,18 +25,26 @@ public class Challenge {
     private User user;
 
     @ColumnDefault("0000000")
-    private String selectedDays;
+    private String selectedDaysNoSpending;
+
+    @ColumnDefault("0000000")
+    private String selectedDaysWeeklySaving;
 
     private LocalDate startDate;
     private Integer yearGoal;        // 연간 목표
     private Integer weekOfMonthGoal; // 요일별 목표
+    private Integer startAmount;     // 시작 금액
+    private Integer plusAmount;      // 증가 금액
 
     public Challenge(ManagementChallengeReqDto managementChallengeReqDto, User user) {
         this.user = user;
         this.challengeType = managementChallengeReqDto.getChallengeType();
-        this.selectedDays = managementChallengeReqDto.getSelectedDays();
+        this.selectedDaysNoSpending = managementChallengeReqDto.getSelectedDaysNoSpending();
+        this.selectedDaysWeeklySaving = managementChallengeReqDto.getSelectedDaysWeeklySaving();
         this.startDate = managementChallengeReqDto.getStartDate();
         this.yearGoal = managementChallengeReqDto.getYearGoal();
         this.weekOfMonthGoal = managementChallengeReqDto.getWeekOfMonthGoal();
+        this.startAmount = managementChallengeReqDto.getStartAmount();
+        this.plusAmount = managementChallengeReqDto.getPlusAmount();
     }
 }

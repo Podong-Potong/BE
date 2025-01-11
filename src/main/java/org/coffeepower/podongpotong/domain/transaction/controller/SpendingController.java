@@ -9,6 +9,8 @@ import org.coffeepower.podongpotong.domain.transaction.service.SpendingService;
 import org.coffeepower.podongpotong.global.exception.Result;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/spending")
@@ -24,4 +26,8 @@ public class SpendingController {
     @PostMapping("/getlist")
     @Operation(summary = "지출 목록", description = "년도, 월을 이용하여 유저의 지출 목록 출력 API")
     public Result<?> getSpending(@RequestBody MonthSpendReq monthSpendReq) { return spendingService.getSpending(1L, monthSpendReq); }
+
+    @PostMapping("/daySpend")
+    @Operation(summary = "일별 지출", description = "일별 지출 출력 API")
+    public Result<?> getDaySpend(@RequestBody LocalDate localDate) { return spendingService.getSpending(1L, localDate); }
 }

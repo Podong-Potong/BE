@@ -32,4 +32,11 @@ public class SpendingGoal {
         this.category = registerGoalReqDto.getCategory();
         this.startDate = registerGoalReqDto.getStartDate();
     }
+
+    public SpendingGoal(User user, int amount, TransactionCategory category, LocalDate startDate) {
+        this.user = user;
+        this.amount = amount;
+        this.category = category;
+        this.startDate = startDate;
+    }
 }

@@ -2,11 +2,14 @@ package org.coffeepower.podongpotong.domain.challenge.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.coffeepower.podongpotong.domain.challenge.dto.ChallengeListResDto;
 import org.coffeepower.podongpotong.domain.challenge.dto.ChallengeResDto;
 import org.coffeepower.podongpotong.domain.challenge.dto.ManagementChallengeReqDto;
 import org.coffeepower.podongpotong.domain.challenge.entity.Challenge;
 import org.coffeepower.podongpotong.domain.challenge.entity.ChallengeType;
 import org.coffeepower.podongpotong.domain.challenge.exception.NoSpendingNotRegisted;
+import org.coffeepower.podongpotong.domain.challenge.exception.SavingGameNotRegistered;
+import org.coffeepower.podongpotong.domain.challenge.exception.WeeklySavingNotRegistered;
 import org.coffeepower.podongpotong.domain.challenge.exception.YearlySavingNotRegistered;
 import org.coffeepower.podongpotong.domain.challenge.repository.ChallengeRepository;
 import org.coffeepower.podongpotong.domain.transaction.repository.SpendingRepository;
@@ -47,7 +50,8 @@ public class ChallengeService {
         // 챌린지가 등록이 되어 있을 경우
         Optional<Challenge> challenge = challengeRepository.findByUserAndChallengeType(user, managementChallengeReqDto.getChallengeType());
         if (challenge.isPresent()) {
-            challenge.get().setSelectedDays(managementChallengeReqDto.getSelectedDays());
+            challenge.get().setSelectedDaysNoSpending(managementChallengeReqDto.getSelectedDaysNoSpending());
+            challenge.get().setSelectedDaysWeeklySaving(managementChallengeReqDto.getSelectedDaysWeeklySaving());
             challenge.get().setYearGoal(managementChallengeReqDto.getYearGoal());
             challenge.get().setWeekOfMonthGoal(managementChallengeReqDto.getWeekOfMonthGoal());
             return new Result<>(ErrorCode.SUCCESS, "Change Challenge Days");
@@ -67,16 +71,19 @@ public class ChallengeService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        List<Challenge> challengeList = challengeRepository.findByUser(user).orElse(null);
-        List<ChallengeResDto> challengeResDtos = new ArrayList<>();
+        Result<?> noSpend = this.getNoSpendingChallenge(userId);
+        Result<?> yearGoal = this.getYearGoalChallenge(userId);
+        Result<?> savingGame = this.getSavingGameChallenge(userId);
+        Result<?> weeklySaving = this.getWeeklySavingChallenge(userId);
 
-        if (challengeList != null) {
-            for (Challenge challenge : challengeList) {
-                challengeResDtos.add(new ChallengeResDto(challenge));
-            }
-        }
+        String noSpendRate = noSpend.getData() == null ? "미등록" : noSpend.getData().toString();
+        String yearGoalRate = yearGoal.getData() == null ? "미등록" : yearGoal.getData().toString();
+        String savingGameRate = savingGame.getData() == null ? "미등록" : savingGame.getData().toString();
+        String weeklySavingRate = weeklySaving.getData() == null ? "미등록" : weeklySaving.getData().toString();
 
-        return new Result<>(ErrorCode.SUCCESS, challengeResDtos);
+        ChallengeListResDto result = new ChallengeListResDto(noSpendRate, yearGoalRate, savingGameRate, weeklySavingRate);
+
+        return new Result<>(ErrorCode.SUCCESS, result);
     }
 
     // 무지출 챌린지 달성률 출력
@@ -93,7 +100,7 @@ public class ChallengeService {
             Challenge challenge = challengeRepository.findByUserAndChallengeType(user, ChallengeType.NO_SPENDING).orElseThrow(NoSpendingNotRegisted::new);
 
             // 요일을 뽑아냄
-            String dayOfWeek = challenge.getSelectedDays();
+            String dayOfWeek = challenge.getSelectedDaysNoSpending();
             List<DayOfWeek> days = new ArrayList<>();
 
             for (int i = 0; i < dayOfWeek.length(); i++) {
@@ -153,6 +160,94 @@ public class ChallengeService {
 
         } catch (YearlySavingNotRegistered e) {
             return new Result<>(ErrorCode.YEARLY_SAVING_NOT_REGISTERED);
+        }
+    }
+
+    // "숫자 게임 저축" 챌린지 달성률 출력
+    public Result<?> getSavingGameChallenge(Long userId) {
+        User user = null;
+
+        try {
+            user = userRepository.findById(userId).orElseThrow(NoUserDataException::new);
+        } catch (NoUserDataException e) {
+            return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
+        }
+
+        try {
+            Challenge challenge = challengeRepository.findByUserAndChallengeType(user, ChallengeType.SAVING_GAME).orElseThrow(SavingGameNotRegistered::new);
+
+            Integer startAmount = challenge.getStartAmount(); // 시작금액
+            Integer plusAmount = challenge.getPlusAmount();   // 증가금액
+
+            YearMonth currentYearMonth = YearMonth.now();       // 현재 연도와 월
+            int currentMonth = currentYearMonth.getMonthValue(); // 현재 월
+            int daysInMonth = currentYearMonth.lengthOfMonth(); // 현재 월의 일 수
+
+            // 올해의 시작과 끝 계산
+            LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), currentMonth, 1);
+            LocalDate endOfYear = LocalDate.of(LocalDate.now().getYear(), currentMonth, daysInMonth);
+
+            Float totalSaving = spendingRepository. sumFundAmountForCurrentYear(startOfYear, endOfYear, user);
+
+            if (totalSaving == null) { totalSaving = 0f; }
+
+            Float goalSaving = 0f;
+            for (int i = 0; i < daysInMonth; i++) {
+                goalSaving += startAmount.floatValue() + (plusAmount.floatValue() * i);
+            }
+
+            return new Result<>(ErrorCode.SUCCESS, (totalSaving / goalSaving) * 100);
+
+        } catch (SavingGameNotRegistered e) {
+            return new Result<>(ErrorCode.SAVING_GAME_NOT_REGISTERED);
+        }
+    }
+
+    // "요일 소비제한" 챌린지 달성률 출력
+    public Result<?> getWeeklySavingChallenge(Long userId) {
+        User user = null;
+
+        try {
+            user = userRepository.findById(userId).orElseThrow(NoUserDataException::new);
+        } catch (NoUserDataException e) {
+            return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
+        }
+
+        try {
+            Challenge challenge = challengeRepository.findByUserAndChallengeType(user, ChallengeType.WEEKLY_SAVING).orElseThrow(WeeklySavingNotRegistered::new);
+
+            Integer goal = challenge.getWeekOfMonthGoal();
+
+            // 요일을 뽑아냄
+            String dayOfWeek = challenge.getSelectedDaysWeeklySaving();
+            List<DayOfWeek> days = new ArrayList<>();
+
+            for (int i = 0; i < dayOfWeek.length(); i++) {
+                if (dayOfWeek.charAt(i) == '1') {
+                    days.add(DayOfWeek.values()[i]);
+                }
+            }
+
+            // 이번달에 적합한 요일의 날짜를 넣음
+            List<LocalDate> selectedDays = new ArrayList<>();
+
+            YearMonth currentYearMonth = YearMonth.now();       // 현재 연도와 월
+            int daysInMonth = currentYearMonth.lengthOfMonth(); // 현재 월의 일 수
+
+            for (int i = 1; i <= daysInMonth; i++) {
+                LocalDate day = currentYearMonth.atDay(i);
+                DayOfWeek d = day.getDayOfWeek();
+
+                if (days.contains(d)) { selectedDays.add(day); }
+            }
+
+            Integer goalCnt = spendingRepository.countDatesWithLowExpenses(goal ,selectedDays, user);
+
+            if (goalCnt == null) { goalCnt = 0; }
+
+            return new Result<>(ErrorCode.SUCCESS, ((float)goalCnt / (float)selectedDays.size()) * 100);
+        } catch (WeeklySavingNotRegistered e) {
+            return new Result<>(ErrorCode.WEEKLY_SAVING_NOT_REGISTERED);
         }
     }
 
