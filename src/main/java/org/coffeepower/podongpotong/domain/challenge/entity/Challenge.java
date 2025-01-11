@@ -28,11 +28,15 @@ public class Challenge {
     private String selectedDays;
 
     private LocalDate startDate;
+    private Integer yearGoal;        // 연간 목표
+    private Integer weekOfMonthGoal; // 요일별 목표
 
     public Challenge(ManagementChallengeReqDto managementChallengeReqDto, User user) {
         this.user = user;
         this.challengeType = managementChallengeReqDto.getChallengeType();
         this.selectedDays = managementChallengeReqDto.getSelectedDays();
         this.startDate = managementChallengeReqDto.getStartDate();
+        this.yearGoal = managementChallengeReqDto.getYearGoal();
+        this.weekOfMonthGoal = managementChallengeReqDto.getWeekOfMonthGoal();
     }
 }

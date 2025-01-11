@@ -25,6 +25,7 @@ public enum TransactionCategory {
     GIFTS("경조/선물"),
     SAVINGS("모임통장 및 청약"),
     FRIEND("친구"),
+    Fund("저금"),
 
     INCOME("수입"),
 

@@ -18,10 +18,14 @@ public class ChallengeResDto {
     private ChallengeType challengeType;
     private String selectedDays;
     private LocalDate startDate;
+    private Integer yearGoal;        // 연간 목표
+    private Integer weekOfMonthGoal; // 요일별 목표
 
     public ChallengeResDto(Challenge challenge) {
         this.challengeType = challenge.getChallengeType();
         this.selectedDays = challenge.getSelectedDays();
         this.startDate = challenge.getStartDate();
+        this.yearGoal = challenge.getYearGoal();
+        this.weekOfMonthGoal = challenge.getWeekOfMonthGoal();
     }
 }

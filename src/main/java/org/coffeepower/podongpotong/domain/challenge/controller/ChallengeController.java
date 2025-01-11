@@ -23,6 +23,14 @@ public class ChallengeController {
     }
 
     @PostMapping("")
-    @Operation(summary = "챌린지 출력", description = "유저의 챌린지 목록을 출력")
+    @Operation(summary = "챌린지 출력", description = "유저의 챌린지 목록을 출력하는 API")
     public Result<?> getChallengeList() { return challengeService.getChallengeList(1L); }
+
+    @PostMapping("/NoSpending")
+    @Operation(summary = "무지출 챌린지", description = "무지출 챌린지 달성률을 출력하는 API")
+    public Result<?> getNoSpendingChallenge() { return challengeService.getNoSpendingChallenge(1L); }
+
+    @PostMapping("/YearlySaving")
+    @Operation(summary = "1년 기준 NNN 모으기 챌린지", description = "1년 기준 NNN 모으기 챌린지 달성률을 출력하는 API")
+    public Result<?> getYearlySavingChallenge() { return challengeService.getYearGoalChallenge(1L); }
 }

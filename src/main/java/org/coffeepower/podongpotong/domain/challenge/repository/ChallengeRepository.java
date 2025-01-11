@@ -17,4 +17,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     Optional<Challenge> findByUserAndChallengeType(@Param("user") User user, @Param("challengeType") ChallengeType challengeType);
 
     Optional<List<Challenge>> findByUser(User user);
+
+    @Query("SELECT EXISTS (SELECT true FROM Challenge c where c.user = :user AND c.challengeType = :challengeType)")
+    Boolean findByUserAndChallengeTypeExists(@Param("user") User user, @Param("challengeType") ChallengeType challengeType);
 }

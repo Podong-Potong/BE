@@ -10,4 +10,6 @@ public class ManagementChallengeReqDto {
     private ChallengeType challengeType;
     private String selectedDays;
     private LocalDate startDate;
+    private Integer yearGoal;        // 연간 목표
+    private Integer weekOfMonthGoal; // 요일별 목표
 }
