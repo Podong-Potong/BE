@@ -10,6 +10,8 @@ public enum ErrorCode {
 
     // 에러 코드 예시
     TEST_STATUS(HttpStatus.OK, "health"),
+
+    // 성공 (Success, 200)
     SUCCESS(HttpStatus.OK, "성공"),
 
     // User

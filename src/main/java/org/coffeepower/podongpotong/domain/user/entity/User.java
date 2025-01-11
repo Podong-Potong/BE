@@ -2,6 +2,7 @@ package org.coffeepower.podongpotong.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.coffeepower.podongpotong.domain.user.dto.RegisterReqDto;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
