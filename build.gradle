@@ -36,6 +36,16 @@ dependencies {
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+    // JPA & MariaDB
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    // Redis
+    // Lettuce는 비동기, Jedis는 동기 -> Lettuce는 Jedis에 비해 성능이 좋기도 해서 Lettuce 사용을 권장
+    // Lettuce는 따로 의존성 추가 안해줘도 된다.
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 tasks.named('test') {
