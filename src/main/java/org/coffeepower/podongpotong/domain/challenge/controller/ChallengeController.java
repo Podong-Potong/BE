@@ -22,7 +22,7 @@ public class ChallengeController {
         return challengeService.managementChallenge(1L, managementChallengeReqDto);
     }
 
-    @PostMapping("")
+    @GetMapping("")
     @Operation(summary = "챌린지 출력", description = "유저의 챌린지 목록을 출력하는 API")
     public Result<?> getChallengeList() { return challengeService.getChallengeList(1L); }
 

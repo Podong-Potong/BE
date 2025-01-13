@@ -38,13 +38,13 @@ public class Challenge {
 
     public Challenge(ManagementChallengeReqDto managementChallengeReqDto, User user) {
         this.user = user;
-        this.challengeType = managementChallengeReqDto.getChallengeType();
-        this.selectedDaysNoSpending = managementChallengeReqDto.getSelectedDaysNoSpending();
-        this.selectedDaysWeeklySaving = managementChallengeReqDto.getSelectedDaysWeeklySaving();
-        this.startDate = managementChallengeReqDto.getStartDate();
-        this.yearGoal = managementChallengeReqDto.getYearGoal();
-        this.weekOfMonthGoal = managementChallengeReqDto.getWeekOfMonthGoal();
-        this.startAmount = managementChallengeReqDto.getStartAmount();
-        this.plusAmount = managementChallengeReqDto.getPlusAmount();
+        this.challengeType = managementChallengeReqDto.challengeType();
+        this.selectedDaysNoSpending = managementChallengeReqDto.selectedDaysNoSpending();
+        this.selectedDaysWeeklySaving = managementChallengeReqDto.selectedDaysWeeklySaving();
+        this.startDate = managementChallengeReqDto.startDate();
+        this.yearGoal = managementChallengeReqDto.yearGoal();
+        this.weekOfMonthGoal = managementChallengeReqDto.weekOfMonthGoal();
+        this.startAmount = managementChallengeReqDto.startAmount();
+        this.plusAmount = managementChallengeReqDto.plusAmount();
     }
 }

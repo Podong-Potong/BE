@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.coffeepower.podongpotong.domain.user.dto.RegisterReqDto;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
@@ -29,10 +28,10 @@ public class User {
     private RoleType roleType;
 
     public User(RegisterReqDto registerReqDto) {
-        this.email = registerReqDto.getEmail();
-        this.password = registerReqDto.getPassword();
-        this.name = registerReqDto.getName();
-        this.gender = registerReqDto.getGender();
+        this.email = registerReqDto.email();
+        this.password = registerReqDto.password();
+        this.name = registerReqDto.name();
+        this.gender = registerReqDto.gender();
         this.roleType = RoleType.USER;
         this.registerDate = LocalDate.now();
     }

@@ -3,7 +3,6 @@ package org.coffeepower.podongpotong.domain.challenge.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.coffeepower.podongpotong.domain.challenge.dto.ChallengeListResDto;
-import org.coffeepower.podongpotong.domain.challenge.dto.ChallengeResDto;
 import org.coffeepower.podongpotong.domain.challenge.dto.ManagementChallengeReqDto;
 import org.coffeepower.podongpotong.domain.challenge.entity.Challenge;
 import org.coffeepower.podongpotong.domain.challenge.entity.ChallengeType;
@@ -13,7 +12,6 @@ import org.coffeepower.podongpotong.domain.challenge.exception.WeeklySavingNotRe
 import org.coffeepower.podongpotong.domain.challenge.exception.YearlySavingNotRegistered;
 import org.coffeepower.podongpotong.domain.challenge.repository.ChallengeRepository;
 import org.coffeepower.podongpotong.domain.transaction.repository.SpendingRepository;
-import org.coffeepower.podongpotong.domain.transaction.service.SpendingService;
 import org.coffeepower.podongpotong.domain.user.entity.User;
 import org.coffeepower.podongpotong.domain.user.exception.NoUserDataException;
 import org.coffeepower.podongpotong.domain.user.repository.UserRepository;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
 
@@ -48,12 +45,12 @@ public class ChallengeService {
         }
 
         // 챌린지가 등록이 되어 있을 경우
-        Optional<Challenge> challenge = challengeRepository.findByUserAndChallengeType(user, managementChallengeReqDto.getChallengeType());
+        Optional<Challenge> challenge = challengeRepository.findByUserAndChallengeType(user, managementChallengeReqDto.challengeType());
         if (challenge.isPresent()) {
-            challenge.get().setSelectedDaysNoSpending(managementChallengeReqDto.getSelectedDaysNoSpending());
-            challenge.get().setSelectedDaysWeeklySaving(managementChallengeReqDto.getSelectedDaysWeeklySaving());
-            challenge.get().setYearGoal(managementChallengeReqDto.getYearGoal());
-            challenge.get().setWeekOfMonthGoal(managementChallengeReqDto.getWeekOfMonthGoal());
+            challenge.get().setSelectedDaysNoSpending(managementChallengeReqDto.selectedDaysNoSpending());
+            challenge.get().setSelectedDaysWeeklySaving(managementChallengeReqDto.selectedDaysWeeklySaving());
+            challenge.get().setYearGoal(managementChallengeReqDto.yearGoal());
+            challenge.get().setWeekOfMonthGoal(managementChallengeReqDto.weekOfMonthGoal());
             return new Result<>(ErrorCode.SUCCESS, "Change Challenge Days");
         } else {
             challengeRepository.save(new Challenge(managementChallengeReqDto, user));
@@ -71,15 +68,15 @@ public class ChallengeService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        Result<?> noSpend = this.getNoSpendingChallenge(userId);
-        Result<?> yearGoal = this.getYearGoalChallenge(userId);
-        Result<?> savingGame = this.getSavingGameChallenge(userId);
-        Result<?> weeklySaving = this.getWeeklySavingChallenge(userId);
+        Result<?> noSpend = this.getNoSpendingChallenge(user.getId());
+        Result<?> yearGoal = this.getYearGoalChallenge(user.getId());
+        Result<?> savingGame = this.getSavingGameChallenge(user.getId());
+        Result<?> weeklySaving = this.getWeeklySavingChallenge(user.getId());
 
-        String noSpendRate = noSpend.getData() == null ? "미등록" : noSpend.getData().toString();
-        String yearGoalRate = yearGoal.getData() == null ? "미등록" : yearGoal.getData().toString();
-        String savingGameRate = savingGame.getData() == null ? "미등록" : savingGame.getData().toString();
-        String weeklySavingRate = weeklySaving.getData() == null ? "미등록" : weeklySaving.getData().toString();
+        String noSpendRate = noSpend.getData() == null ? null : noSpend.getData().toString();
+        String yearGoalRate = yearGoal.getData() == null ? null : yearGoal.getData().toString();
+        String savingGameRate = savingGame.getData() == null ? null : savingGame.getData().toString();
+        String weeklySavingRate = weeklySaving.getData() == null ? null : weeklySaving.getData().toString();
 
         ChallengeListResDto result = new ChallengeListResDto(noSpendRate, yearGoalRate, savingGameRate, weeklySavingRate);
 

@@ -33,10 +33,10 @@ public class TransactionDetail {
 
     public TransactionDetail(SpendRegisterReqDto spendRegisterReqDto, User user) {
         this.user = user;
-        this.description = spendRegisterReqDto.getDescription();
-        this.amount = spendRegisterReqDto.getAmount();
-        this.date = spendRegisterReqDto.getDate();
-        this.category = spendRegisterReqDto.getCategory();
-        this.type = spendRegisterReqDto.getType();
+        this.description = spendRegisterReqDto.description();
+        this.amount = spendRegisterReqDto.amount();
+        this.date = spendRegisterReqDto.date();
+        this.category = spendRegisterReqDto.category();
+        this.type = spendRegisterReqDto.type();
     }
 }

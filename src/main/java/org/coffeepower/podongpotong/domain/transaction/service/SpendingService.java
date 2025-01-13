@@ -1,7 +1,6 @@
 package org.coffeepower.podongpotong.domain.transaction.service;
 
 import lombok.RequiredArgsConstructor;
-import org.coffeepower.podongpotong.domain.transaction.dto.MonthSpendReq;
 import org.coffeepower.podongpotong.domain.transaction.dto.SpendResDto;
 import org.coffeepower.podongpotong.domain.transaction.dto.SpendRegisterReqDto;
 import org.coffeepower.podongpotong.domain.transaction.entity.TransactionDetail;
@@ -32,7 +31,7 @@ public class SpendingService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        System.out.println(spendRegisterReqDto.getCategory());
+        System.out.println(spendRegisterReqDto.category());
 
         spendingRepository.save(new TransactionDetail(spendRegisterReqDto, user));
 
@@ -40,7 +39,7 @@ public class SpendingService {
     }
 
     // 지출 출력
-    public Result<?> getSpending(long userId, MonthSpendReq monthSpendReq) {
+    public Result<?> getSpending(long userId, int year, int month) {
         User user = null;
 
         try {
@@ -49,7 +48,7 @@ public class SpendingService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        List<TransactionDetail> transactionDetailList = spendingRepository.findByUserBetweenYearAndMonth(user, monthSpendReq.getYear(), monthSpendReq.getMonth());
+        List<TransactionDetail> transactionDetailList = spendingRepository.findByUserBetweenYearAndMonth(user, year, month);
         List<SpendResDto> spendResDtos = new ArrayList<>();
 
         for (TransactionDetail transactionDetail : transactionDetailList) {

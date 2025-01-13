@@ -7,17 +7,14 @@ import org.coffeepower.podongpotong.domain.goal.dto.RegisterGoalListReqDto;
 import org.coffeepower.podongpotong.domain.goal.dto.RegisterGoalReqDto;
 import org.coffeepower.podongpotong.domain.goal.service.GoalService;
 import org.coffeepower.podongpotong.global.exception.Result;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/goal")
-@Tag(name = "Gole API", description = "카테고리별 지출 목표 API")
+@Tag(name = "Goal API", description = "카테고리별 지출 목표 API")
 public class GoalController {
 
     private final GoalService goalService;
@@ -26,7 +23,7 @@ public class GoalController {
     @Operation(summary = "목표 등록", description = "카테고리별 목표 등록 API")
     public Result<?> registerGoal(@RequestBody Integer goal) { return goalService.saveGoalList(1L, goal); }
 
-    @PostMapping("/getlist")
+    @GetMapping("")
     @Operation(summary = "목표 목록", description = "유저의 목표들 출력 API")
     public Result<?> getGoalList() { return goalService.getGoalList(1L); }
 
