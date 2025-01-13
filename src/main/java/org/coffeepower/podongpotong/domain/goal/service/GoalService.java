@@ -75,8 +75,8 @@ public class GoalService {
             return new Result<>(ErrorCode.FAIL_TO_FIND_USER);
         }
 
-        for (int i = 0; i < registerGoalReqDto.getAmountList().size(); i++) {
-            SpendingGoal spendingGoal = new SpendingGoal(user, registerGoalReqDto.getAmountList().get(i), TransactionCategory.values()[i], registerGoalReqDto.getStartDate());
+        for (int i = 0; i < registerGoalReqDto.amountList().size(); i++) {
+            SpendingGoal spendingGoal = new SpendingGoal(user, registerGoalReqDto.amountList().get(i), TransactionCategory.values()[i], registerGoalReqDto.startDate());
             goalRepository.save(spendingGoal);
         }
 

@@ -5,9 +5,11 @@ import org.coffeepower.podongpotong.domain.transaction.entity.TransactionCategor
 
 import java.time.LocalDate;
 
-@Data
-public class RegisterGoalReqDto {
-    private int amount;             // 목표 금액
-    private TransactionCategory category; // 카테고리
-    private LocalDate startDate;         // 목표 설정 날짜
+/**
+ * @param amount    목표 금액
+ * @param category  카테고리
+ * @param startDate 목표 설정 날짜
+ */
+
+public record RegisterGoalReqDto(int amount, TransactionCategory category, LocalDate startDate) {
 }

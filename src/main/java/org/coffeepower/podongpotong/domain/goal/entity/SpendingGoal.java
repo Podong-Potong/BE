@@ -28,9 +28,9 @@ public class SpendingGoal {
 
     public SpendingGoal(RegisterGoalReqDto registerGoalReqDto, User user) {
         this.user = user;
-        this.amount = registerGoalReqDto.getAmount();
-        this.category = registerGoalReqDto.getCategory();
-        this.startDate = registerGoalReqDto.getStartDate();
+        this.amount = registerGoalReqDto.amount();
+        this.category = registerGoalReqDto.category();
+        this.startDate = registerGoalReqDto.startDate();
     }
 
     public SpendingGoal(User user, int amount, TransactionCategory category, LocalDate startDate) {
